@@ -32,3 +32,5 @@ HEADERS += \
 
 RESOURCES += \
     qtdl_ressources.qrc
+
+win32:RC_ICONS += icons/favicon.ico

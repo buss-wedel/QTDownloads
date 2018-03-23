@@ -1,12 +1,14 @@
 <RCC>
-    <qresource prefix="/icons">
-        <file>icons/filenew.png</file>
-        <file>icons/fileopen.png</file>
+    <qresource prefix="/">
         <file>icons/apply.png</file>
         <file>icons/cancel.png</file>
         <file>icons/configure.png</file>
         <file>icons/configurefile.png</file>
         <file>icons/exec.png</file>
+        <file>icons/favicon.ico</file>
+        <file>icons/favicon-16x16.png</file>
+        <file>icons/filenew.png</file>
+        <file>icons/fileopen.png</file>
         <file>icons/fileprint.png</file>
         <file>icons/filesave.png</file>
         <file>icons/folder_html.png</file>
@@ -17,7 +19,5 @@
         <file>icons/htmledit.png</file>
         <file>icons/htmlnew.png</file>
         <file>icons/htmlremove.png</file>
-        <file>icons/inbox.png</file>
-        <file>icons/inbox_open.png</file>
     </qresource>
 </RCC>

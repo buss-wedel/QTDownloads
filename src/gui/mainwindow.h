@@ -19,7 +19,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QAction>
+#include <QLabel>
 #include <QMainWindow>
+#include <QMenu>
+#include <QToolBar>
 
 class MainWindow : public QMainWindow
 {
@@ -29,8 +33,34 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-private:
+private slots:
+    void updateStatusBar();
 
+private:
+    void createActions();
+    void createMenus();
+    void createContextMenu();
+    void createToolBars();
+    void createStatusBar();
+
+    QAction *newFileAction;
+    QAction *openFileAction;
+    QAction *saveFileAction;
+    QAction *exitAction;
+    QAction *newCategoryAction;
+    QAction *editCategoryAction;
+    QAction *deleteCategoryAction;
+    QAction *newItemAction;
+    QAction *editItemAction;
+    QAction *deleteItemAction;
+
+    QMenu *fileMenu;
+    QMenu *editMenu;
+    QMenu *helpMenu;
+
+    QToolBar *fileToolBar;
+
+    QLabel *statusLabel;
 };
 
 #endif // MAINWINDOW_H

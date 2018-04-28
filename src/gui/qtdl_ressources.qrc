@@ -19,5 +19,6 @@
         <file>icons/htmledit.png</file>
         <file>icons/htmlnew.png</file>
         <file>icons/htmlremove.png</file>
+        <file>icons/exit.png</file>
     </qresource>
 </RCC>

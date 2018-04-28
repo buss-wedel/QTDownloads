@@ -21,6 +21,11 @@
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication::setApplicationName(APPLICATION_NAME);
+    QCoreApplication::setApplicationVersion(APPLICATION_VERSION);
+    QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
+    QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
+
     QApplication a(argc, argv);
    // QApplication::setWindowIcon(QIcon(":/icons/favicon.ico"));
     MainWindow w;

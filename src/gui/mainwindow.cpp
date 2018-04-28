@@ -23,10 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     createActions();
-    createMenus();
     createContextMenu();
-    createToolBars();
+    createMenus();
     createStatusBar();
+    createToolBars();
 }
 
 MainWindow::~MainWindow()
@@ -36,7 +36,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateStatusBar()
 {
-    statusLabel->setText("dummy");
+    statusLabel->setText(QString("v%1").arg(APPLICATION_VERSION));
 }
 
 void MainWindow::createActions()
@@ -58,25 +58,42 @@ void MainWindow::createActions()
 
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcut(QKeySequence::Quit);
+    exitAction->setIcon(QIcon(":/icons/exit.png"));
     exitAction->setStatusTip(tr("Exit this application"));
 
     newCategoryAction = new QAction(tr("&New category"), this);
+    newCategoryAction->setIcon(QIcon(":/icons/folder_html_new.png"));
     newCategoryAction->setStatusTip(tr("Create a new category"));
 
     editCategoryAction = new QAction(tr("&Edit category"), this);
+    editCategoryAction->setIcon(QIcon(":/icons/folder_html_edit.png"));
     editCategoryAction->setStatusTip(tr("Edit an existing category"));
 
     deleteCategoryAction = new QAction(tr("&Delete category"), this);
+    deleteCategoryAction->setIcon(QIcon(":/icons/folder_html_remove.png"));
     deleteCategoryAction->setStatusTip(tr("Deleten an existing category"));
 
     newItemAction = new QAction(tr("&New Item"), this);
+    newItemAction->setIcon(QIcon(":/icons/htmlnew.png"));
     newItemAction->setStatusTip(tr("Create a new item"));
 
     editItemAction = new QAction(tr("&Edit item"), this);
+    editItemAction->setIcon(QIcon(":/icons/htmledit.png"));
     editItemAction->setStatusTip(tr("Edit an existing item"));
 
     deleteItemAction = new QAction(tr("&Delete item"), this);
+    deleteItemAction->setIcon(QIcon(":/icons/htmlremove.png"));
     deleteItemAction->setStatusTip(tr("Delete an existing item"));
+}
+
+void MainWindow::createConnections()
+{
+    //placeholder - to be filled later
+}
+
+void MainWindow::createContextMenu()
+{
+    //dummy - maybe for later usage
 }
 
 void MainWindow::createMenus()
@@ -88,30 +105,18 @@ void MainWindow::createMenus()
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
 
-    editMenu = menuBar()->addMenu(tr("&Edit data"));
-    editMenu->addAction(newCategoryAction);
-    editMenu->addAction(editCategoryAction);
-    editMenu->addAction(deleteCategoryAction);
-    editMenu->addSeparator();
-    editMenu->addAction(newItemAction);
-    editMenu->addAction(editItemAction);
-    editMenu->addAction(deleteItemAction);
+    categoryMenu = menuBar()->addMenu(tr("&Category"));
+    categoryMenu->addAction(newCategoryAction);
+    categoryMenu->addAction(editCategoryAction);
+    categoryMenu->addAction(deleteCategoryAction);
+
+    itemMenu = menuBar()->addMenu(tr("&Item"));
+    itemMenu->addAction(newItemAction);
+    itemMenu->addAction(editItemAction);
+    itemMenu->addAction(deleteItemAction);
 
     helpMenu = menuBar()->addMenu(tr("&Help"));
 
-}
-
-void MainWindow::createContextMenu()
-{
-    //dummy - maybe for later usage
-}
-
-void MainWindow::createToolBars()
-{
-    fileToolBar = addToolBar(tr("&File"));
-    fileToolBar->addAction(newFileAction);
-    fileToolBar->addAction(openFileAction);
-    fileToolBar->addAction(saveFileAction);
 }
 
 void MainWindow::createStatusBar()
@@ -121,4 +126,20 @@ void MainWindow::createStatusBar()
     statusBar()->addWidget(statusLabel);
 
     updateStatusBar();
+}
+
+void MainWindow::createToolBars()
+{
+    mainToolBar = addToolBar(tr("&Main"));
+    mainToolBar->addAction(newFileAction);
+    mainToolBar->addAction(openFileAction);
+    mainToolBar->addAction(saveFileAction);
+    mainToolBar->addSeparator();
+    mainToolBar->addAction(newCategoryAction);
+    mainToolBar->addAction(editCategoryAction);
+    mainToolBar->addAction(deleteCategoryAction);
+    mainToolBar->addSeparator();
+    mainToolBar->addAction(newItemAction);
+    mainToolBar->addAction(editItemAction);
+    mainToolBar->addAction(deleteItemAction);
 }

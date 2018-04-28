@@ -38,10 +38,11 @@ private slots:
 
 private:
     void createActions();
-    void createMenus();
+    void createConnections();
     void createContextMenu();
-    void createToolBars();
+    void createMenus();
     void createStatusBar();
+    void createToolBars();
 
     QAction *newFileAction;
     QAction *openFileAction;
@@ -55,10 +56,11 @@ private:
     QAction *deleteItemAction;
 
     QMenu *fileMenu;
-    QMenu *editMenu;
+    QMenu *categoryMenu;
+    QMenu *itemMenu;
     QMenu *helpMenu;
 
-    QToolBar *fileToolBar;
+    QToolBar *mainToolBar;
 
     QLabel *statusLabel;
 };

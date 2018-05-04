@@ -24,36 +24,57 @@
 #include <QMainWindow>
 #include <QMenu>
 #include <QToolBar>
+#include <QTreeView>
+
+#include "../core/aboutdata.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
-    void updateStatusBar();
+    void aboutSlot();
+    void loadFileSlot();
+    void deleteCategorySlot();
+    void deleteItemSlot();
+    void editCategorySlot();
+    void editItemSlot();
+    void newCategorySlot();
+    void newItemSlot();
+    void newFileSlot();
+    void saveFileSlot();
+    void saveFileAsSlot();
+    void updateStatusBarSlot();
 
 private:
+    void createAboutData();
     void createActions();
+    void createCentralWidget();
     void createConnections();
     void createContextMenu();
     void createMenus();
     void createStatusBar();
     void createToolBars();
+    void setFileRelatedActionsAvailable(bool enable = false);
 
     QAction *newFileAction;
     QAction *openFileAction;
     QAction *saveFileAction;
+    QAction *saveAsFileAction;
     QAction *exitAction;
+    QAction *configureFileAction;
     QAction *newCategoryAction;
     QAction *editCategoryAction;
     QAction *deleteCategoryAction;
     QAction *newItemAction;
     QAction *editItemAction;
     QAction *deleteItemAction;
+    QAction *aboutAction;
+    QAction *aboutQtAction;
 
     QMenu *fileMenu;
     QMenu *categoryMenu;
@@ -62,7 +83,11 @@ private:
 
     QToolBar *mainToolBar;
 
+    QTreeView *mainTreeView;
+
     QLabel *statusLabel;
+
+    AboutData *m_aboutData;
 };
 
 #endif // MAINWINDOW_H

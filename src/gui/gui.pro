@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = QTDownloads
+TARGET = QtDownloads
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -25,18 +25,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 VERSION = 0.0.1
 
 DEFINES += APPLICATION_VERSION=\\\"$${VERSION}\\\"
-DEFINES += APPLICATION_NAME=\\\"QTDownloads\\\"
+DEFINES += APPLICATION_NAME=\\\"QtDownloads\\\"
 DEFINES += ORGANIZATION_NAME=\\\"Buss-Wedel\\\"
 DEFINES += ORGANIZATION_DOMAIN=\\\"https://github.com/buss-wedel/QTDownloads/\\\"
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    aboutdialog.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    aboutdialog.h
 
 RESOURCES += \
     qtdl_ressources.qrc
 
 win32:RC_ICONS += icons/favicon.ico
+
+include(../core/core.pri)

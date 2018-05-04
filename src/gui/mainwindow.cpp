@@ -17,16 +17,20 @@
  **/
 #include <QtWidgets>
 
+#include "aboutdialog.h"
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    createAboutData();
     createActions();
+    createConnections();
     createContextMenu();
     createMenus();
     createStatusBar();
     createToolBars();
+    setFileRelatedActionsAvailable();
 }
 
 MainWindow::~MainWindow()
@@ -34,9 +38,104 @@ MainWindow::~MainWindow()
 
 }
 
-void MainWindow::updateStatusBar()
+void MainWindow::aboutSlot()
+{
+    AboutDialog *dlg = new AboutDialog(m_aboutData);
+    dlg->exec();
+}
+
+void MainWindow::loadFileSlot()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open download list data file"),
+                                                    "",
+                                                    tr("Download list data files (*.xml)"));
+
+    if (!fileName.isEmpty()) {
+        // try to load file
+        setFileRelatedActionsAvailable(true);
+    }
+}
+
+void MainWindow::deleteCategorySlot()
+{
+
+}
+
+void MainWindow::deleteItemSlot()
+{
+
+}
+
+void MainWindow::editCategorySlot()
+{
+
+}
+
+void MainWindow::editItemSlot()
+{
+
+}
+
+void MainWindow::newCategorySlot()
+{
+
+}
+
+void MainWindow::newItemSlot()
+{
+
+}
+
+void MainWindow::newFileSlot()
+{
+    // create new data object
+    setFileRelatedActionsAvailable(true);
+}
+
+void MainWindow::saveFileSlot()
+{
+    // try to save current file
+}
+
+void MainWindow::saveFileAsSlot()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save download list data file"),
+                                                    "",
+                                                    tr("Download list data files (*.xml)"));
+    if (!fileName.isEmpty()) {
+        // give fileName to project and try to save it
+    }
+}
+
+void MainWindow::updateStatusBarSlot()
 {
     statusLabel->setText(QString("v%1").arg(APPLICATION_VERSION));
+}
+
+void MainWindow::createAboutData()
+{
+    m_aboutData = new AboutData( QCoreApplication::applicationName(),
+                                 QCoreApplication::applicationVersion(),
+                                 tr("A tool to manage and publish lists of downloadable items."),
+                                 "Copyright 2018 Buss-Wedel &lt;buss-wedel@mail.com&gt;.",
+                                 "Licensed under GNU GPL v3",
+                                 QCoreApplication::organizationDomain());
+
+    m_aboutData->addAuthor("Kjelt Hansen",
+                           "",
+                           "buss-wedel@mail.com");
+    m_aboutData->addAuthor("Marie Hansen",
+                           "",
+                           "buss-wedel@mail.com");
+    m_aboutData->addAuthor("Mark Buß",
+                           tr("Author current and previous version of QTDownloads"),
+                           "buss-wedel@mail.com");
+    m_aboutData->addAuthor("Boris Müller-Rowold",
+                           tr("Author of previous version of QTDownloads"));
+
+    m_aboutData->setApplicationLicenseFile(QCoreApplication::applicationDirPath()+"/COPYING");
 }
 
 void MainWindow::createActions()
@@ -56,6 +155,11 @@ void MainWindow::createActions()
     saveFileAction->setIcon(QIcon(":/icons/filesave.png"));
     saveFileAction->setStatusTip(tr("Save the document to disk"));
 
+    saveAsFileAction = new QAction(tr("Save &As..."), this);
+    saveAsFileAction->setShortcut(QKeySequence::SaveAs);
+    saveAsFileAction->setIcon(QIcon(":/icons/filesaveas.png"));
+    saveAsFileAction->setStatusTip(tr("Name and save the document to disk"));
+
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcut(QKeySequence::Quit);
     exitAction->setIcon(QIcon(":/icons/exit.png"));
@@ -71,7 +175,7 @@ void MainWindow::createActions()
 
     deleteCategoryAction = new QAction(tr("&Delete category"), this);
     deleteCategoryAction->setIcon(QIcon(":/icons/folder_html_remove.png"));
-    deleteCategoryAction->setStatusTip(tr("Deleten an existing category"));
+    deleteCategoryAction->setStatusTip(tr("Delete an existing category"));
 
     newItemAction = new QAction(tr("&New Item"), this);
     newItemAction->setIcon(QIcon(":/icons/htmlnew.png"));
@@ -84,11 +188,37 @@ void MainWindow::createActions()
     deleteItemAction = new QAction(tr("&Delete item"), this);
     deleteItemAction->setIcon(QIcon(":/icons/htmlremove.png"));
     deleteItemAction->setStatusTip(tr("Delete an existing item"));
+
+    configureFileAction = new QAction(tr("&File settings..."), this);
+    configureFileAction->setIcon(QIcon(":/icons/configurefile.png"));
+    configureFileAction->setStatusTip(tr("Allows modifying current file's settings."));
+
+    aboutAction = new QAction(tr("&About QtDownloads"), this);
+    aboutAction->setIcon(QIcon(":/icons/info.png"));
+    aboutAction->setStatusTip(tr("Information about QtDownloads"));
+
+    aboutQtAction = new QAction(tr("&About Qt"), this);
+    aboutQtAction->setIcon(QIcon(":/icons/qt_logo_green_16x16px.png"));
+    aboutQtAction->setStatusTip(tr("Information about Qt"));
+}
+
+void MainWindow::createCentralWidget()
+{
+    mainTreeView = new QTreeView();
+    // Model has to been set later because it is not available at app start
+    setCentralWidget(mainTreeView);
 }
 
 void MainWindow::createConnections()
 {
-    //placeholder - to be filled later
+    connect(newFileAction, &QAction::triggered, this, &MainWindow::newFileSlot);
+    connect(openFileAction, &QAction::triggered, this, &MainWindow::loadFileSlot);
+    connect(saveFileAction, &QAction::triggered, this, &MainWindow::saveFileSlot);
+    connect(saveAsFileAction, &QAction::triggered, this, &MainWindow::saveFileAsSlot);
+    connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
+
+    connect(aboutAction, &QAction::triggered,this, &MainWindow::aboutSlot);
+    connect(aboutQtAction, &QAction::triggered, qApp, &QApplication::aboutQt);
 }
 
 void MainWindow::createContextMenu()
@@ -102,6 +232,9 @@ void MainWindow::createMenus()
     fileMenu->addAction(newFileAction);
     fileMenu->addAction(openFileAction);
     fileMenu->addAction(saveFileAction);
+    fileMenu->addAction(saveAsFileAction);
+    fileMenu->addSeparator();
+    fileMenu->addAction(configureFileAction);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAction);
 
@@ -116,24 +249,28 @@ void MainWindow::createMenus()
     itemMenu->addAction(deleteItemAction);
 
     helpMenu = menuBar()->addMenu(tr("&Help"));
-
+    helpMenu->addAction(aboutQtAction);
+    helpMenu->addAction(aboutAction);
 }
 
 void MainWindow::createStatusBar()
 {
     statusLabel = new QLabel("dummy");
 
-    statusBar()->addWidget(statusLabel);
+    statusBar()->addPermanentWidget(statusLabel);
 
-    updateStatusBar();
+    updateStatusBarSlot();
 }
 
 void MainWindow::createToolBars()
 {
-    mainToolBar = addToolBar(tr("&Main"));
+    mainToolBar = addToolBar(tr("&Main toolbar"));
     mainToolBar->addAction(newFileAction);
     mainToolBar->addAction(openFileAction);
     mainToolBar->addAction(saveFileAction);
+    mainToolBar->addAction(saveAsFileAction);
+    mainToolBar->addSeparator();
+    mainToolBar->addAction(configureFileAction);
     mainToolBar->addSeparator();
     mainToolBar->addAction(newCategoryAction);
     mainToolBar->addAction(editCategoryAction);
@@ -143,3 +280,19 @@ void MainWindow::createToolBars()
     mainToolBar->addAction(editItemAction);
     mainToolBar->addAction(deleteItemAction);
 }
+
+void MainWindow::setFileRelatedActionsAvailable(bool enable)
+{
+    saveFileAction->setEnabled(enable);
+    saveAsFileAction->setEnabled(enable);
+    configureFileAction->setEnabled(enable);
+
+    newCategoryAction->setEnabled(enable);
+    editCategoryAction->setEnabled(enable);
+    deleteCategoryAction->setEnabled(enable);
+
+    newItemAction->setEnabled(enable);
+    editItemAction->setEnabled(enable);
+    deleteItemAction->setEnabled(enable);
+}
+

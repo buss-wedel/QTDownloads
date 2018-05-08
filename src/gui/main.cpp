@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
 
     QApplication a(argc, argv);
-   // QApplication::setWindowIcon(QIcon(":/icons/favicon.ico"));
+    QApplication::setWindowIcon(QIcon(":/icons/favicon.ico"));
     MainWindow w;
     w.show();
 

@@ -58,9 +58,9 @@ void AboutDialog::createAboutDialogLayout()
     aboutDialogButtonBox = new QDialogButtonBox(QDialogButtonBox::Close);
 
     QGridLayout *mainLayout = new QGridLayout();
-    mainLayout->addLayout(titleLayout,0,0,Qt::AlignTop);
-    mainLayout->addWidget(aboutTabWidget,1,0);
-    mainLayout->addWidget(aboutDialogButtonBox,2,0);
+    mainLayout->addLayout(titleLayout, 0, 0, Qt::AlignTop);
+    mainLayout->addWidget(aboutTabWidget, 1, 0);
+    mainLayout->addWidget(aboutDialogButtonBox, 2, 0);
 
     setLayout(mainLayout);
 }
@@ -145,9 +145,9 @@ void AboutDialog::createLicenseTab()
             licenseText.append(in.readLine()).append("#br#");
         }
     }
-    licenseText.replace("<","&lt;");
-    licenseText.replace(">","&gt;");
-    licenseText.replace("#br#","<br>");
+    licenseText.replace("<", "&lt;");
+    licenseText.replace(">", "&gt;");
+    licenseText.replace("#br#", "<br>");
 
     licensePageTextBrowser = new QTextBrowser();
     licensePageTextBrowser->setOpenLinks(false);

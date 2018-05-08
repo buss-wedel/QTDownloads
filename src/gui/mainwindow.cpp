@@ -18,6 +18,7 @@
 #include <QtWidgets>
 
 #include "aboutdialog.h"
+#include "downloadlistsettingsdialog.h"
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -89,8 +90,20 @@ void MainWindow::newItemSlot()
 
 void MainWindow::newFileSlot()
 {
-    // create new data object
-    setFileRelatedActionsAvailable(true);
+    // TODO create new data object
+    DownloadListSettingsDialog *dlg = new DownloadListSettingsDialog();
+    dlg->exec();
+    qDebug() << dlg->result();
+    if (dlg->result() == QDialog::Accepted) {
+        setFileRelatedActionsAvailable(true);
+        qDebug() << dlg->templateFileName();
+        qDebug() << dlg->absoluteFilesPath();
+        qDebug() << dlg->relativeFilesPath();
+        qDebug() << dlg->absolutePicturePath();
+        qDebug() << dlg->relativePicturePath();
+        // TODO store modified data to data object
+    }
+    delete dlg;
 }
 
 void MainWindow::saveFileSlot()
@@ -135,7 +148,7 @@ void MainWindow::createAboutData()
     m_aboutData->addAuthor("Boris Müller-Rowold",
                            tr("Author of previous version of QTDownloads"));
 
-    m_aboutData->setApplicationLicenseFile(QCoreApplication::applicationDirPath()+"/COPYING");
+    m_aboutData->setApplicationLicenseFile(QCoreApplication::applicationDirPath() + "/COPYING");
 }
 
 void MainWindow::createActions()
@@ -217,7 +230,7 @@ void MainWindow::createConnections()
     connect(saveAsFileAction, &QAction::triggered, this, &MainWindow::saveFileAsSlot);
     connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
 
-    connect(aboutAction, &QAction::triggered,this, &MainWindow::aboutSlot);
+    connect(aboutAction, &QAction::triggered, this, &MainWindow::aboutSlot);
     connect(aboutQtAction, &QAction::triggered, qApp, &QApplication::aboutQt);
 }
 

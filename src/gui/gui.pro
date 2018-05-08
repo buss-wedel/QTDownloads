@@ -32,11 +32,13 @@ DEFINES += ORGANIZATION_DOMAIN=\\\"https://github.com/buss-wedel/QTDownloads/\\\
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    downloadlistsettingsdialog.cpp
 
 HEADERS += \
         mainwindow.h \
-    aboutdialog.h
+    aboutdialog.h \
+    downloadlistsettingsdialog.h
 
 RESOURCES += \
     qtdl_ressources.qrc
@@ -44,3 +46,4 @@ RESOURCES += \
 win32:RC_ICONS += icons/favicon.ico
 
 include(../core/core.pri)
+include(../3rdparty/3rdparty.pri)

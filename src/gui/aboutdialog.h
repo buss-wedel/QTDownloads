@@ -59,7 +59,6 @@ private:
     QTextBrowser *licensePageTextBrowser;
 
     AboutData *m_data;
-
 };
 
 #endif // ABOUTDIALOG_H

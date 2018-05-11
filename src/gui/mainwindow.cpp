@@ -18,6 +18,8 @@
 #include <QtWidgets>
 
 #include "aboutdialog.h"
+#include "downloadlistcategorydialog.h"
+#include "downloadlistitemdialog.h"
 #include "downloadlistsettingsdialog.h"
 #include "mainwindow.h"
 
@@ -45,6 +47,77 @@ void MainWindow::aboutSlot()
     dlg->exec();
 }
 
+void MainWindow::configureFileSlot()
+{
+    //TODO Connect to data class
+    DownloadListSettingsDialog *dlg = new DownloadListSettingsDialog();
+    dlg->setData(QString(),QString(),QString(),QString(),QString(),QString());
+    dlg->exec();
+    qDebug() << dlg->result();
+    if (dlg->result() == QDialog::Accepted) {
+        setFileRelatedActionsAvailable(true);
+        qDebug() << dlg->templateFileName();
+        qDebug() << dlg->absoluteFilesPath();
+        qDebug() << dlg->relativeFilesPath();
+        qDebug() << dlg->absolutePicturePath();
+        qDebug() << dlg->relativePicturePath();
+    }
+    delete dlg;
+}
+
+void MainWindow::deleteCategorySlot()
+{
+    //FIXME Check on category selection
+    int result = QMessageBox::question(this,tr("Delete a category"),
+                                       tr("Do really want to delete %1 category?").arg(QString()));
+    qDebug() << result;
+}
+
+void MainWindow::deleteItemSlot()
+{
+    //FIXME Check on item selection
+    int result = QMessageBox::question(this,tr("Delete a category"),
+                                       tr("Do really want to delete %1 item?").arg(QString()));
+    qDebug() << result;
+}
+
+void MainWindow::editCategorySlot()
+{
+    //FIXME Check on category selection
+    //TODO Connect to data class
+    DownloadListCategoryDialog *dlg = new DownloadListCategoryDialog();
+    dlg->setData(QString(),QString());
+    dlg->exec();
+    if (dlg->result() == QDialog::Accepted) {
+        qDebug() << dlg->name();
+        qDebug() << dlg->description();
+    }
+    delete dlg;
+}
+
+void MainWindow::editItemSlot()
+{
+    //FIXME Check on item selection
+    //TODO Connect to data class
+    DownloadListItemDialog *dlg =new DownloadListItemDialog();
+    dlg->setGeneralPaths(QString(),QString(),QString(),QString());
+    dlg->setAvailableGroups(QStringList());
+    dlg->setData(QString(),QString(),QString(),Qt::Unchecked,QString(),QString(),Qt::Unchecked,QString(),QString());
+    dlg->exec();
+    if (dlg->result() == QDialog::Accepted) {
+        qDebug() << dlg->name();
+        qDebug() << dlg->description();
+        qDebug() << dlg->absoluteFileName();
+        qDebug() << dlg->useRelativeFileName();
+        qDebug() << dlg->relativeFileName();
+        qDebug() << dlg->absolutePictureName();
+        qDebug() << dlg->useRelativePictureName();
+        qDebug() << dlg->relativePictureName();
+        qDebug() << dlg->groupName();
+    }
+    delete dlg;
+}
+
 void MainWindow::loadFileSlot()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -58,34 +131,36 @@ void MainWindow::loadFileSlot()
     }
 }
 
-void MainWindow::deleteCategorySlot()
-{
-
-}
-
-void MainWindow::deleteItemSlot()
-{
-
-}
-
-void MainWindow::editCategorySlot()
-{
-
-}
-
-void MainWindow::editItemSlot()
-{
-
-}
-
 void MainWindow::newCategorySlot()
 {
-
+    //TODO Connect to data class
+    DownloadListCategoryDialog *dlg = new DownloadListCategoryDialog();
+    dlg->exec();
+    if (dlg->result() == QDialog::Accepted) {
+        qDebug() << dlg->name();
+        qDebug() << dlg->description();
+    }
 }
 
 void MainWindow::newItemSlot()
 {
-
+    //TODO Connect to data class
+    DownloadListItemDialog *dlg =new DownloadListItemDialog();
+    dlg->setGeneralPaths(QString(),QString(),QString(),QString());
+    dlg->setAvailableGroups(QStringList());
+    dlg->exec();
+    if (dlg->result() == QDialog::Accepted) {
+        qDebug() << dlg->name();
+        qDebug() << dlg->description();
+        qDebug() << dlg->absoluteFileName();
+        qDebug() << dlg->useRelativeFileName();
+        qDebug() << dlg->relativeFileName();
+        qDebug() << dlg->absolutePictureName();
+        qDebug() << dlg->useRelativePictureName();
+        qDebug() << dlg->relativePictureName();
+        qDebug() << dlg->groupName();
+    }
+    delete dlg;
 }
 
 void MainWindow::newFileSlot()
@@ -229,6 +304,16 @@ void MainWindow::createConnections()
     connect(saveFileAction, &QAction::triggered, this, &MainWindow::saveFileSlot);
     connect(saveAsFileAction, &QAction::triggered, this, &MainWindow::saveFileAsSlot);
     connect(exitAction, &QAction::triggered, qApp, &QApplication::quit);
+
+    connect(configureFileAction, &QAction::triggered, this, &MainWindow::configureFileSlot);
+
+    connect(newCategoryAction, &QAction::triggered, this, &MainWindow::newCategorySlot);
+    connect(editCategoryAction, &QAction::triggered, this, &MainWindow::editCategorySlot);
+    connect(deleteCategoryAction, &QAction::triggered, this, &MainWindow::deleteCategorySlot);
+
+    connect(newItemAction, &QAction::triggered, this, &MainWindow::newItemSlot);
+    connect(editItemAction, &QAction::triggered, this, &MainWindow::editItemSlot);
+    connect(deleteItemAction, &QAction::triggered, this, &MainWindow::deleteItemSlot);
 
     connect(aboutAction, &QAction::triggered, this, &MainWindow::aboutSlot);
     connect(aboutQtAction, &QAction::triggered, qApp, &QApplication::aboutQt);

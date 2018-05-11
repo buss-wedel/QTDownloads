@@ -33,12 +33,16 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     aboutdialog.cpp \
-    downloadlistsettingsdialog.cpp
+    downloadlistsettingsdialog.cpp \
+    downloadlistcategorydialog.cpp \
+    downloadlistitemdialog.cpp
 
 HEADERS += \
         mainwindow.h \
     aboutdialog.h \
-    downloadlistsettingsdialog.h
+    downloadlistsettingsdialog.h \
+    downloadlistcategorydialog.h \
+    downloadlistitemdialog.h
 
 RESOURCES += \
     qtdl_ressources.qrc

@@ -15,7 +15,6 @@
  ** You should have received a copy of the GNU General Public License
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
-
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -38,11 +37,12 @@ public:
 
 private slots:
     void aboutSlot();
-    void loadFileSlot();
+    void configureFileSlot();
     void deleteCategorySlot();
     void deleteItemSlot();
     void editCategorySlot();
     void editItemSlot();
+    void loadFileSlot();
     void newCategorySlot();
     void newItemSlot();
     void newFileSlot();

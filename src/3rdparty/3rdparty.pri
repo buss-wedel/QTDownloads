@@ -20,3 +20,6 @@ SOURCES += \
     $$PWD/wwwidgets/colormodel.cpp \
     $$PWD/wwwidgets/wwglobal_p.cpp
 
+DISTFILES += \
+    $$PWD/wwwidgets/COPYING
+
